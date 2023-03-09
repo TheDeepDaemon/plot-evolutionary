@@ -67,7 +67,7 @@ def plot_evolutionary_algorithm(fitness_function, initial_population, mutation_r
     image_list = show_surface.get_image_list(fig_list)
     anim = show_surface.create_animation_from_images(image_list, interval=50)
     anim_id = random_string(4)
-    anim.save('evo_animation_{}_{}_{}.mp4'.format(mutation_rate, mutation_stddev, anim_id), fps=2, extra_args=['-vcodec', 'libx264'])
+    anim.save('animations/evo_animation_{}_{}_{}.mp4'.format(mutation_rate, mutation_stddev, anim_id), fps=2, extra_args=['-vcodec', 'libx264'])
     
 
 def sinxy_(x, y):
@@ -85,4 +85,4 @@ if __name__ == "__main__":
     starting_point = np.array([3.4, 3.4], dtype=float)
     initial_pop = evolutionary.generate_normdist_points(starting_point, 500, 0.2)
 
-    plot_evolutionary_algorithm(sinxy, initial_pop, 0.2, 0.015, 2000, 100)
+    plot_evolutionary_algorithm(sinxy, initial_pop, 0.2, 0.1, 1000, 100)
