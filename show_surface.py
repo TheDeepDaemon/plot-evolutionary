@@ -77,7 +77,8 @@ def create_animation_from_images(image_list, interval=50):
 
     return anim
 
-if __name__ == "__main__":
+
+def run_evo_algorithm_example():
     n = 5
     arr_size = 10
     point_dim = 3
@@ -93,4 +94,7 @@ if __name__ == "__main__":
 
     anim.save('animation.mp4', fps=1, extra_args=['-vcodec', 'libx264'])
 
+
+if __name__ == "__main__":
+    run_evo_algorithm_example()
 
