@@ -9,17 +9,6 @@ def random_string(size):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
 
 
-def value_to_color(value):
-    # Calculate the red and green values
-    red = int((1 - value) * 255)
-    green = int(value * 255)
-    
-    # Construct the color code
-    color_code = "#{:02x}{:02x}{:02x}".format(red, green, 0)
-    
-    return color_code
-
-
 def plot_evolutionary_algorithm(fitness_function, initial_population, mutation_rate, mutation_stddev, n_steps, every_n=None):
     population = initial_population
     pop_averages = []
@@ -81,8 +70,12 @@ def sinxy(point1, point2=None):
         return sinxy_(point1, point2)
 
 
-if __name__ == "__main__":
+def test_evo_algorithm():
     starting_point = np.array([3.4, 3.4], dtype=float)
     initial_pop = evolutionary.generate_normdist_points(starting_point, 500, 0.2)
 
     plot_evolutionary_algorithm(sinxy, initial_pop, 0.2, 0.1, 1000, 100)
+
+
+if __name__ == "__main__":
+    test_evo_algorithm()

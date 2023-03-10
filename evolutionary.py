@@ -106,10 +106,6 @@ def evolve(population, fitness_function, mutation_rate, mutation_stddev, n_steps
     return population
 
 
-def example_fitfunc(genes):
-    return np.linalg.norm(genes)
-
-
 def generate_normdist_points(base, num_points, std_dev):
     # Generate normally distributed random numbers
     x = np.random.normal(0, std_dev, num_points) + base[0]
@@ -120,12 +116,15 @@ def generate_normdist_points(base, num_points, std_dev):
     return np.array(points, dtype=float)
 
 
-if __name__ == "__main__":
+def test_evo_step():
     initial_pop_ave = (1, 1)
     initial_pop = generate_normdist_points(initial_pop_ave, 10, 1)
     
     print(initial_pop)
     
+    def example_fitfunc(genes):
+        return np.linalg.norm(genes)
+
     next_pop = evolutionary_step(
         initial_pop,
         fitness_function=example_fitfunc,
@@ -136,4 +135,7 @@ if __name__ == "__main__":
         )
     
     print(next_pop)
-    print(len(next_pop))
+
+
+if __name__ == "__main__":
+    test_evo_step()

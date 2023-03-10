@@ -78,7 +78,7 @@ def create_animation_from_images(image_list, interval=50):
     return anim
 
 
-def run_evo_algorithm_example():
+def test_plotting_3d():
     n = 5
     arr_size = 10
     point_dim = 3
@@ -96,5 +96,5 @@ def run_evo_algorithm_example():
 
 
 if __name__ == "__main__":
-    run_evo_algorithm_example()
+    test_plotting_3d()
 
