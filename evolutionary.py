@@ -1,6 +1,15 @@
 import numpy as np
 
 
+def calc_expected_population_delta(population, population_average, fitness_function):
+    if len(population) == 0:
+        return None
+    total = np.zeros_like(population[0])
+    for member in population:
+        total += (member - population_average) * fitness_function(member)
+    return total / np.linalg.norm(total)
+
+
 def get_dtype_of_array(arr):
     dtype = arr.dtype
     if (
@@ -20,6 +29,8 @@ def get_dtype_of_array(arr):
         return 'int'
     elif (dtype == np.bool8):
         return 'bool'
+    else:
+        return None
 
 
 def mutate_phenotype(population, index, mutation_point, mutation_stddev):
@@ -51,7 +62,7 @@ def mutate_genotype(population, index, mutation_point, mutation_stddev, mutation
 def create_next_generation(population_shape, parents):
     # Create new population by recombining parents
     new_population = []
-    for i in range(population_shape[0]):
+    for _ in range(population_shape[0]):
         parent1_index = np.random.randint(len(parents))
         parent2_index = np.random.randint(len(parents))
         crossover_point = np.random.randint(population_shape[1])
@@ -76,15 +87,14 @@ def apply_mutations(new_population, mutation_rate, is_phenotype, mutation_stddev
 # if not, then it is a vector of genes, and mutations occurring mean that specific genes have changed
 def evolutionary_step(population, fitness_function, mutation_rate, mutation_stddev, mutation_range=None, is_phenotype=True):
     population_shape = population.shape
-    gtype = get_dtype_of_array(population)
-
+    
     # Evaluate fitness of each population member
-    survival_probabilities = np.array([fitness_function(member) for member in population])
+    reproduction_probabilities = np.array([fitness_function(member) for member in population])
 
     # Select parents for the next generation by eliminating based on survival probability
     parents = []
     for i in range(len(population)):
-        if np.random.rand() < survival_probabilities[i]:
+        if np.random.rand() < reproduction_probabilities[i]:
             parents.append(population[i])
 
     # If none survived this round of selection, just return the original population
@@ -95,7 +105,7 @@ def evolutionary_step(population, fitness_function, mutation_rate, mutation_stdd
     new_population = create_next_generation(population_shape, parents)
     new_population = np.array(new_population, dtype=population.dtype)
 
-    apply_mutations(new_population, mutation_rate, is_phenotype, mutation_stddev, mutation_range, gtype)
+    apply_mutations(new_population, mutation_rate, is_phenotype, mutation_stddev, mutation_range, get_dtype_of_array(population))
     
     return new_population
 
@@ -132,7 +142,7 @@ def test_evo_step():
         mutation_stddev=0.1,
         mutation_range=10,
         is_phenotype=True
-        )
+    )
     
     print(next_pop)
 

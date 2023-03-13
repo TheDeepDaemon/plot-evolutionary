@@ -27,14 +27,13 @@ def plot_mesh_with_point(func, start_pos, size, num_points, mesh_color, points, 
     for i, point in enumerate(points3d):
         zorder = 1
         if point_zorders is not None:
-            if len(point_zorders) > 1:
+            if hasattr(point_zorders, '__len__'):
                 zorder = point_zorders[i]
             else:
                 zorder = point_zorders
         ax.scatter(point[0], point[1], point[2], c=point_colors[i], s=50, edgecolors='green', zorder=zorder)
     
     return fig
-
 
 
 def plot_3d_points(point_list):
@@ -46,6 +45,13 @@ def plot_3d_points(point_list):
         fig_list.append(fig)
     return fig_list
 
+
+def plot_arrows_3d(x, y, z, dx, dy, dz, ax, color='blue'):
+    ax.quiver(x, y, z, dx, dy, dz, color=color)
+
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
 
 
 def get_image_list(fig_list):
@@ -78,6 +84,12 @@ def create_animation_from_images(image_list, interval=50):
     return anim
 
 
+def create_and_save_anim(fig_list, filename):
+    image_list = get_image_list(fig_list)
+    anim = create_animation_from_images(image_list, interval=50)
+    anim.save(filename, fps=2, extra_args=['-vcodec', 'libx264'])
+
+
 def test_plotting_3d():
     n = 5
     arr_size = 10
@@ -97,4 +109,3 @@ def test_plotting_3d():
 
 if __name__ == "__main__":
     test_plotting_3d()
-
